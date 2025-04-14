@@ -10,4 +10,9 @@ OUT_BIN="${DIR}/example_exe"
 SQUEUE="${DIR}/../src/"
 
 # Compile
-g++ -I $SQUEUE -o $OUT_BIN "${DIR}/generic/main.cpp"
+g++ -std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion \
+    -Wshadow -Wcast-align -Wcast-qual -Wfloat-equal -Wundef -Wswitch-default \
+    -Wswitch-enum -Wredundant-decls -Wunreachable-code -Wwrite-strings \
+    -Wformat=2 -Wduplicated-cond -Wduplicated-branches -Wlogical-op \
+    -Wnull-dereference -Wdouble-promotion -Wvla \
+    -I $SQUEUE -o $OUT_BIN "${DIR}/generic/main.cpp"
