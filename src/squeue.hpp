@@ -103,9 +103,7 @@ class SQueue
         /**
          * @brief Returns reference to the first element in the Queue. This
          * element will be the first element to be removed on a call to pop().
-         *
          * @return T_QUEUE_ELEMENTS* Reference to the first element.
-         *
          * @details
          * This function get the address of the first stored element of the
          * queue. If there is no elements on the Queue, a nullptr is returned.
@@ -113,17 +111,15 @@ class SQueue
         T_QUEUE_ELEMENTS* front()
         {
             if ( empty() )
-                return nullptr;
+            {   return nullptr;   }
             else
-                return &(buffer[(queue_tail + 1U) % QUEUE_SIZE]);
+            {   return &(buffer[(queue_tail + 1U) % QUEUE_SIZE]);   }
         }
 
         /**
          * @brief Returns reference to the last element in the Queue. This is
          * the most recently pushed element.
-         *
          * @return T_QUEUE_ELEMENTS* Reference to the last element.
-         *
          * @details
          * This function get the address of the last stored element of the
          * queue. If there is no elements on the Queue, a nullptr is returned.
@@ -131,18 +127,15 @@ class SQueue
         T_QUEUE_ELEMENTS* back()
         {
             if ( empty() )
-                return nullptr;
+            {   return nullptr;   }
 
             return &(buffer[queue_head]);
         }
 
         /**
          * @brief Pushes the given element value to the end of the Queue.
-         *
          * @param element The value of the element to push.
-         *
          * @return true If the push have
-         *
          * @details
          * This function append a new element to the last position of Queue
          * buffer. It increments the Queues head index (new element at the
@@ -164,7 +157,7 @@ class SQueue
                 queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
             }
             else
-                num_elements_stored = num_elements_stored + 1U;
+            {   num_elements_stored = num_elements_stored + 1U;   }
 
             // Increase Queue back element position and add the new element
             queue_head = (queue_head + 1U) % QUEUE_SIZE;
@@ -172,9 +165,9 @@ class SQueue
 
             // Return push result on buffer overflow
             if ( buffer_overflow )
-                return BUFFER_OVERFLOW;
+            {   return BUFFER_OVERFLOW;   }
             else
-                return BUFFER_OK;
+            {   return BUFFER_OK;   }
         }
 
         /**
@@ -189,7 +182,7 @@ class SQueue
         void pop()
         {
             if ( empty() )
-                return;
+            {   return;   }
 
             queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
             num_elements_stored = num_elements_stored - 1U;
