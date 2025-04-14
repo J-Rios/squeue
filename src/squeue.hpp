@@ -1,4 +1,3 @@
-
 /**
  * @file    squeue.hpp
  * @author  Jose Miguel Rios Rubio <jrios.github@gmail.com>
@@ -11,7 +10,7 @@
  * without using any kind of dynamic memory allocation.
  *
  * This function could be used to replace C++ STL queue component that uses
- * dinamyc memory.
+ * dynamic memory.
  *
  * The implementation of this Queue component is based on the use of a
  * circular buffer with two incremental indexes (head and tail) that returns
@@ -20,24 +19,6 @@
  * index. The number of elements that are currently stored in the queue is
  * given by the difference between head and tail indexes. When the Queue is
  * full, the new elements will overwrite the older elements.
- *
- * @section LICENSE
- *
- * Copyright (c) 2022 Jose Miguel Rios Rubio. All right reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 /*****************************************************************************/
