@@ -99,6 +99,13 @@ int main()
     // Show Queue Content
     show_queue_content(queue_main);
 
+    // Check if element is already in the Queue
+    s_data new_data = { 6U, 6.0F, true };
+    if (queue_main.contains(new_data))
+    {   printf("Element 6 is already in the queue\n");   }
+    else
+    {   printf("Element 6 is not in the queue\n");   }
+
     printf("\nExample end\n\n");
     return 0;
 }
@@ -137,7 +144,8 @@ void show_queue_content(SQueue<s_data, QUEUE_SIZE>& queue)
 
         const char* str_completed = element->completed ? "true" : "false";
         printf("  Element %d: { %d, %f, %s}\n",
-            i, static_cast<int>(element->id), element->value, str_completed);
+            i, static_cast<int>(element->id),
+            static_cast<double>(element->value), str_completed);
         i = i + 1;
     }
 }

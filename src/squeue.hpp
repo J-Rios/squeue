@@ -33,7 +33,9 @@
 /* Libraries */
 
 // Standard C++ libraries
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 /*****************************************************************************/
 
@@ -80,9 +82,7 @@ class SQueue
 
         /**
          * @brief Check if the Queue is empty (no elements in the buffer).
-         *
          * @return true if the Queue is empty.
-         *
          * @return false otherwise.
          */
         bool empty()
@@ -92,7 +92,6 @@ class SQueue
 
         /**
          * @brief Returns the number of elements currently stored in the Queue.
-         *
          * @return uint32_t The number of elements in the Queue.
          */
         uint32_t size()
@@ -189,15 +188,38 @@ class SQueue
             buffer_overflow = false;
         }
 
+        /**
+         * @brief Checks if a given element is already in the queue.
+         * @param element Element to check if is in the queue.
+         * @return true Element is already in the queue.
+         * @return false Element is not in the queue.
+         * @warning Take care that T_QUEUE_ELEMENTS data type must be
+         * comparable (check for padding, complex data types with
+         * pointers, functions, etc).
+         */
+        bool contains(const T_QUEUE_ELEMENTS& element)
+        {
+            using std::memcmp;
+            constexpr size_t size_elements = sizeof(T_QUEUE_ELEMENTS);
+
+            for (size_t i = 0U; i < num_elements_stored; i++)
+            {
+                size_t index = (queue_head + i) % QUEUE_SIZE;
+                T_QUEUE_ELEMENTS& queue_element = buffer[index];
+                if (memcmp(&element, &queue_element, size_elements) == 0U)
+                {   return true;   }
+            }
+
+            return false;
+        }
+
 #if 0 /* The next methods are not currently supported */
         /**
          * @brief Pushes a new element to the end of the Queue. The element is
          * constructed in-place, i.e. no copy or move operations are
          * performed. The constructor of the element is called with exactly
          * the same arguments as supplied to the function.
-         *
          * @param args Arguments to forward to the constructor of the element.
-         *
          * @details
          * This function functionality is incompatible with just static memory
          * allocation usage implementation.
@@ -206,9 +228,7 @@ class SQueue
 
         /**
          * @brief Exchanges the contents of the Queue with another Queue.
-         *
          * @param other Queue to exchange the contents with.
-         *
          * @details
          * This function should check if the Queues are of the same elements
          * type and has the same size before any swap operation is done.
