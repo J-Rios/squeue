@@ -141,7 +141,7 @@ class SQueue
             if ( empty() )
             {   return nullptr;   }
             else
-            {   return &(buffer[(queue_tail + 1U) % QUEUE_SIZE]);   }
+            {   return &(buffer[queue_tail]);   }
         }
 
         /**
@@ -157,7 +157,9 @@ class SQueue
             if ( empty() )
             {   return nullptr;   }
 
-            return &(buffer[queue_head]);
+            uint32_t last_index = (queue_head == 0U) ?
+                (QUEUE_SIZE - 1U) : (queue_head - 1U);
+            return &(buffer[last_index]);
         }
 
         /**
@@ -185,11 +187,14 @@ class SQueue
                 queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
             }
             else
-            {   num_elements_stored = num_elements_stored + 1U;   }
+            {
+                queue_overflow = false;
+                num_elements_stored = num_elements_stored + 1U;
+            }
 
-            // Increase Queue back element position and add the new element
-            queue_head = (queue_head + 1U) % QUEUE_SIZE;
+            // Add the new element and iIncrease Queue back element position
             buffer[queue_head] = element;
+            queue_head = (queue_head + 1U) % QUEUE_SIZE;
 
             // Return push result on buffer overflow
             if ( queue_overflow )
