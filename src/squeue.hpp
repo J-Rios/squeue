@@ -42,11 +42,15 @@
 
 /* Data Types */
 
-typedef enum t_overflow
+/**
+ * @brief SQueue functions result code values.
+ */
+enum class t_squeue_rc : uint8_t
 {
-    BUFFER_OK       = 0,
-    BUFFER_OVERFLOW = 1,
-} t_overflow;
+    OK       = 0U,
+    OVERFLOW = 1U,
+    ERROR   = 255U,
+};
 
 /*****************************************************************************/
 
@@ -76,7 +80,7 @@ class SQueue
             queue_head = 0U;
             queue_tail = 0U;
             num_elements_stored = 0U;
-            buffer_overflow = false;
+            queue_overflow = false;
         }
 
         /**
@@ -87,7 +91,7 @@ class SQueue
             queue_head = 0U;
             queue_tail = 0U;
             num_elements_stored = 0U;
-            buffer_overflow = false;
+            queue_overflow = false;
         }
 
         /**
@@ -169,13 +173,13 @@ class SQueue
          * end, the function return if an overflow of the buffer has occurred
          * (notifying that the oldest element has been overwritten).
          */
-        t_overflow push(const T_QUEUE_ELEMENTS& element)
+        t_squeue_rc push(const T_QUEUE_ELEMENTS& element)
         {
             // Handle if Queue is full or not
             if ( full() )
             {
                 // Set overflow flag and remove oldest Queue element
-                buffer_overflow = true;
+                queue_overflow = true;
                 queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
             }
             else
@@ -186,10 +190,10 @@ class SQueue
             buffer[queue_head] = element;
 
             // Return push result on buffer overflow
-            if ( buffer_overflow )
-            {   return BUFFER_OVERFLOW;   }
+            if ( queue_overflow )
+            {   return t_squeue_rc::OVERFLOW;   }
             else
-            {   return BUFFER_OK;   }
+            {   return t_squeue_rc::OK;   }
         }
 
         /**
@@ -208,7 +212,7 @@ class SQueue
 
             queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
             num_elements_stored = num_elements_stored - 1U;
-            buffer_overflow = false;
+            queue_overflow = false;
         }
 
 #if defined(SQUEUE_ENABLE_CONTAINS)
@@ -285,7 +289,7 @@ class SQueue
         /**
          * @brief Queue is full and has been overflowed.
          */
-        bool buffer_overflow;
+        bool queue_overflow;
 
 };
 

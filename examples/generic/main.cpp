@@ -87,7 +87,7 @@ int main()
     // Add an element to the queue
     printf("Adding one element to the queue...\n");
     s_data first_data = { 0U, 0.0F, false };
-    if (queue_main.push(first_data) == t_overflow::BUFFER_OVERFLOW)
+    if (queue_main.push(first_data) == t_squeue_rc::OVERFLOW)
     {   printf("It's always good to check if the queue overflows\n");   }
     printf("Element 0 added to the queue\n");
     printf("\n");
@@ -103,7 +103,7 @@ int main()
     for (uint16_t i = 1U; i < NUM_ELEMENTS_TO_ADD+1U; i++)
     {
         s_data data = { i, static_cast<float>(i), true };
-        if (queue_main.push(data) == t_overflow::BUFFER_OVERFLOW)
+        if (queue_main.push(data) == t_squeue_rc::OVERFLOW)
         {   printf("Queue overflows\n");   }
         printf("Element %d added to the Queue\n", static_cast<int>(i));
     }
@@ -116,7 +116,7 @@ int main()
     // Check Queue overflow when it is full
     printf("Checking adding another element makes the queue to overflow...\n");
     s_data data = { 5U, 5.0F, true };
-    if (queue_main.push(data) == t_overflow::BUFFER_OVERFLOW)
+    if (queue_main.push(data) == t_squeue_rc::OVERFLOW)
     {
         printf("Queue push overflows (expected, due it is full)\n");
         printf("  Element 5 added to the Queue, element 0 must be lost\n");
