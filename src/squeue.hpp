@@ -79,8 +79,8 @@ class SQueue
          */
         SQueue()
         :
-            queue_head(0U),
-            queue_tail(0U),
+            write_index_head(0U),
+            read_index_tail(0U),
             num_elements_stored(0U),
             queue_overflow(false)
         {}
@@ -90,8 +90,8 @@ class SQueue
          */
         void clear()
         {
-            queue_head = 0U;
-            queue_tail = 0U;
+            write_index_head = 0U;
+            read_index_tail = 0U;
             num_elements_stored = 0U;
             queue_overflow = false;
         }
@@ -141,7 +141,7 @@ class SQueue
             if ( empty() )
             {   return nullptr;   }
             else
-            {   return &(buffer[queue_tail]);   }
+            {   return &(buffer[read_index_tail]);   }
         }
 
         /**
@@ -157,8 +157,8 @@ class SQueue
             if ( empty() )
             {   return nullptr;   }
 
-            uint32_t last_index = (queue_head == 0U) ?
-                (QUEUE_SIZE - 1U) : (queue_head - 1U);
+            uint32_t last_index = (write_index_head == 0U) ?
+                (QUEUE_SIZE - 1U) : (write_index_head - 1U);
             return &(buffer[last_index]);
         }
 
@@ -186,7 +186,7 @@ class SQueue
             {
                 // Set overflow flag and remove oldest Queue element
                 queue_overflow = true;
-                queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
+                read_index_tail = (read_index_tail + 1U) % QUEUE_SIZE;
             }
             else
             {
@@ -194,9 +194,9 @@ class SQueue
                 num_elements_stored = num_elements_stored + 1U;
             }
 
-            // Add the new element and iIncrease Queue back element position
-            buffer[queue_head] = element;
-            queue_head = (queue_head + 1U) % QUEUE_SIZE;
+            // Add the new element and increase Queue back element position
+            buffer[write_index_head] = element;
+            write_index_head = (write_index_head + 1U) % QUEUE_SIZE;
 
             // Return push result on buffer overflow
             if ( queue_overflow )
@@ -219,7 +219,7 @@ class SQueue
             if ( empty() )
             {   return;   }
 
-            queue_tail = (queue_tail + 1U) % QUEUE_SIZE;
+            read_index_tail = (read_index_tail + 1U) % QUEUE_SIZE;
             num_elements_stored = num_elements_stored - 1U;
             queue_overflow = false;
         }
@@ -238,7 +238,7 @@ class SQueue
         {
             for (size_t i = 0U; i < num_elements_stored; i++)
             {
-                size_t index = (queue_tail + i) % QUEUE_SIZE;
+                size_t index = (read_index_tail + i) % QUEUE_SIZE;
                 if (element == buffer[index])
                 {   return true;   }
             }
@@ -283,12 +283,12 @@ class SQueue
         /**
          * @brief Queue circular buffer head location index.
          */
-        uint32_t queue_head;
+        uint32_t write_index_head;
 
         /**
          * @brief Queue circular buffer tail location index.
          */
-        uint32_t queue_tail;
+        uint32_t read_index_tail;
 
         /**
          * @brief Current number of elements stored in the buffer.
