@@ -101,6 +101,19 @@ class SQueue
         }
 
         /**
+         * @brief Checks if the Queue is full.
+         * @return true if the Queue is full.
+         * @return false otherwise.
+         * @details
+         * This function checks if the Queue is full by checking if current
+         * size is equal maximum static queue size (QUEUE_SIZE).
+         */
+        bool full() const
+        {
+            return ( num_elements_stored >= QUEUE_SIZE );
+        }
+
+        /**
          * @brief Returns the number of elements currently stored in the Queue.
          * @return uint32_t The number of elements in the Queue.
          */
@@ -274,22 +287,6 @@ class SQueue
          */
         bool buffer_overflow;
 
-        /******************************/
-
-        /* Private Methods */
-
-        /**
-         * @brief Checks if the Queue is full.
-         * @return true if the Queue is full.
-         * @return false otherwise.
-         * @details
-         * This function checks if the Queue is full by checking if current
-         * size is equal maximum static queue size (QUEUE_SIZE).
-         */
-        bool full() const
-        {
-            return ( size() >= QUEUE_SIZE );
-        }
 };
 
 /*****************************************************************************/
