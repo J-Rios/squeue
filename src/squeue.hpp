@@ -169,7 +169,7 @@ class SQueue
          * end, the function return if an overflow of the buffer has occurred
          * (notifying that the oldest element has been overwritten).
          */
-        t_overflow push(T_QUEUE_ELEMENTS element)
+        t_overflow push(const T_QUEUE_ELEMENTS& element)
         {
             // Handle if Queue is full or not
             if ( full() )
