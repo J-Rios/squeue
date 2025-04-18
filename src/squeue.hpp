@@ -36,7 +36,9 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <type_traits>
+#if defined(SQUEUE_ENABLE_CONTAINS)
+    #include <type_traits>
+#endif // SQUEUE_ENABLE_CONTAINS
 
 /*****************************************************************************/
 
@@ -76,12 +78,12 @@ class SQueue
          * @brief Construct a SQueue object.
          */
         SQueue()
-        {
-            queue_head = 0U;
-            queue_tail = 0U;
-            num_elements_stored = 0U;
-            queue_overflow = false;
-        }
+        :
+            queue_head(0U),
+            queue_tail(0U),
+            num_elements_stored(0U),
+            queue_overflow(false)
+        {}
 
         /**
          * @brief Clear the Queue.
@@ -92,6 +94,15 @@ class SQueue
             queue_tail = 0U;
             num_elements_stored = 0U;
             queue_overflow = false;
+        }
+
+        /**
+         * @brief Returns the number of elements currently stored in the Queue.
+         * @return uint32_t The number of elements in the Queue.
+         */
+        uint32_t size() const
+        {
+            return num_elements_stored;
         }
 
         /**
@@ -115,15 +126,6 @@ class SQueue
         bool full() const
         {
             return ( num_elements_stored >= QUEUE_SIZE );
-        }
-
-        /**
-         * @brief Returns the number of elements currently stored in the Queue.
-         * @return uint32_t The number of elements in the Queue.
-         */
-        uint32_t size() const
-        {
-            return num_elements_stored;
         }
 
         /**
