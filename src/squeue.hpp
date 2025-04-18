@@ -1,8 +1,8 @@
 /**
  * @file    squeue.hpp
  * @author  Jose Miguel Rios Rubio <jrios.github@gmail.com>
- * @date    21-05-2022
- * @version 1.0.0
+ * @date    18-04-2025
+ * @version 1.1.0
  *
  * @section DESCRIPTION
  *
@@ -36,6 +36,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <type_traits>
 
 /*****************************************************************************/
 
@@ -54,6 +55,15 @@ typedef enum t_overflow
 template <typename T_QUEUE_ELEMENTS, uint32_t QUEUE_SIZE>
 class SQueue
 {
+#if defined(SQUEUE_ENABLE_CONTAINS)
+    static_assert(
+        std::is_convertible<
+            decltype(std::declval<T_QUEUE_ELEMENTS>()
+            == std::declval<T_QUEUE_ELEMENTS>()), bool>::value,
+        "T_QUEUE_ELEMENTS must support operator=="
+    );
+#endif // SQUEUE_ENABLE_CONTAINS
+
     public:
 
         /* Public Methods */
@@ -188,6 +198,7 @@ class SQueue
             buffer_overflow = false;
         }
 
+#if defined(SQUEUE_ENABLE_CONTAINS)
         /**
          * @brief Checks if a given element is already in the queue.
          * @param element Element to check if is in the queue.
@@ -197,21 +208,17 @@ class SQueue
          * comparable (check for padding, complex data types with
          * pointers, functions, etc).
          */
-        bool contains(const T_QUEUE_ELEMENTS& element)
+        bool contains(T_QUEUE_ELEMENTS& element) const
         {
-            using std::memcmp;
-            constexpr size_t size_elements = sizeof(T_QUEUE_ELEMENTS);
-
             for (size_t i = 0U; i < num_elements_stored; i++)
             {
-                size_t index = (queue_head + i) % QUEUE_SIZE;
-                T_QUEUE_ELEMENTS& queue_element = buffer[index];
-                if (memcmp(&element, &queue_element, size_elements) == 0U)
+                size_t index = (queue_tail + i) % QUEUE_SIZE;
+                if (element == buffer[index])
                 {   return true;   }
             }
-
             return false;
         }
+#endif // SQUEUE_ENABLE_CONTAINS
 
 #if 0 /* The next methods are not currently supported */
         /**

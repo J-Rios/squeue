@@ -11,6 +11,7 @@
 /* Libraries */
 
 // Standard C++ Libraries
+#include <cmath>
 #include <cstdint>
 #include <cstdio>
 
@@ -35,6 +36,21 @@ struct s_data
     uint16_t id;
     float value;
     bool completed;
+
+// If we enable Squeue library contains() method, it requires that the
+// elements that are going to be stored has a == operator implemented
+#if defined(SQUEUE_ENABLE_CONTAINS)
+    bool operator==(const s_data& data)
+    {
+        if (data.id != id)
+        {   return false;   }
+        if (std::fabs(data.value - value) >= 0.00001F)
+        {   return false;   }
+        if (data.completed != completed)
+        {   return false;   }
+        return true;
+    }
+#endif // SQUEUE_ENABLE_CONTAINS
 };
 
 /*****************************************************************************/
@@ -65,19 +81,24 @@ int main()
 
     // Check Queue is empty
     if (queue_main.empty())
-    {   printf("At the beginning, the queue was empty\n");   }
+    {   printf("At the beginning, the queue is empty\n");   }
+    printf("\n");
 
     // Add an element to the queue
+    printf("Adding one element to the queue...\n");
     s_data first_data = { 0U, 0.0F, false };
     if (queue_main.push(first_data) == t_overflow::BUFFER_OVERFLOW)
     {   printf("It's always good to check if the queue overflows\n");   }
-    printf("Element 0 added to the Queue\n");
+    printf("Element 0 added to the queue\n");
+    printf("\n");
 
     // Check Queue is not empty
-    if (queue_main.empty())
+    if (queue_main.empty() == false)
     {   printf("Of course, now the queue is not empty\n");   }
+    printf("\n");
 
     // Add 4 elements to the queue
+    printf("Adding 4 elements to the queue...\n");
     static constexpr uint16_t NUM_ELEMENTS_TO_ADD = 4U;
     for (uint16_t i = 1U; i < NUM_ELEMENTS_TO_ADD+1U; i++)
     {
@@ -86,27 +107,37 @@ int main()
         {   printf("Queue overflows\n");   }
         printf("Element %d added to the Queue\n", static_cast<int>(i));
     }
+    printf("\n");
 
     // Show Queue Content
     show_queue_content(queue_main);
+    printf("\n");
 
     // Check Queue overflow when it is full
-    s_data data = { 6U, 6.0F, true };
+    printf("Checking adding another element makes the queue to overflow...\n");
+    s_data data = { 5U, 5.0F, true };
     if (queue_main.push(data) == t_overflow::BUFFER_OVERFLOW)
-    {   printf("Queue push overflows (due it is full)\n");   }
-    printf("Element 6 added to the Queue, element 0 must be lost\n");
+    {
+        printf("Queue push overflows (expected, due it is full)\n");
+        printf("  Element 5 added to the Queue, element 0 must be lost\n");
+    }
+    printf("\n");
 
     // Show Queue Content
     show_queue_content(queue_main);
+    printf("\n");
 
     // Check if element is already in the Queue
-    s_data new_data = { 6U, 6.0F, true };
-    if (queue_main.contains(new_data))
-    {   printf("Element 6 is already in the queue\n");   }
-    else
-    {   printf("Element 6 is not in the queue\n");   }
+    #if defined(SQUEUE_ENABLE_CONTAINS)
+        printf("Checking if the queue contains the element 5...\n");
+        if (queue_main.contains(data))
+        {   printf("Element 5 is in in the queue\n");   }
+        else
+        {   printf("Element 5 is not in the queue\n");   }
+        printf("\n");
+    #endif // SQUEUE_ENABLE_CONTAINS
 
-    printf("\nExample end\n\n");
+    printf("Example end\n\n");
     return 0;
 }
 
