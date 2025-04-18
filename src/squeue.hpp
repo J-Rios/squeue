@@ -95,7 +95,7 @@ class SQueue
          * @return true if the Queue is empty.
          * @return false otherwise.
          */
-        bool empty()
+        bool empty() const
         {
             return ( num_elements_stored == 0U );
         }
@@ -104,7 +104,7 @@ class SQueue
          * @brief Returns the number of elements currently stored in the Queue.
          * @return uint32_t The number of elements in the Queue.
          */
-        uint32_t size()
+        uint32_t size() const
         {
             return num_elements_stored;
         }
@@ -286,7 +286,7 @@ class SQueue
          * This function checks if the Queue is full by checking if current
          * size is equal maximum static queue size (QUEUE_SIZE).
          */
-        bool full()
+        bool full() const
         {
             return ( size() >= QUEUE_SIZE );
         }
