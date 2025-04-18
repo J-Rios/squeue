@@ -165,7 +165,9 @@ class SQueue
         /**
          * @brief Pushes the given element value to the end of the Queue.
          * @param element The value of the element to push.
-         * @return true If the push have
+         * @return t_squeue_rc::OK if push succeeded without overwriting.
+         * @return t_squeue_rc::OVERFLOW if the queue was full and the oldest
+         * element was overwritten.
          * @details
          * This function append a new element to the last position of Queue
          * buffer. It increments the Queues head index (new element at the
@@ -232,7 +234,7 @@ class SQueue
          * comparable (check for padding, complex data types with
          * pointers, functions, etc).
          */
-        bool contains(T_QUEUE_ELEMENTS& element) const
+        bool contains(const T_QUEUE_ELEMENTS& element) const
         {
             for (size_t i = 0U; i < num_elements_stored; i++)
             {

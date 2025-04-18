@@ -40,7 +40,7 @@ struct s_data
 // If we enable Squeue library contains() method, it requires that the
 // elements that are going to be stored has a == operator implemented
 #if defined(SQUEUE_ENABLE_CONTAINS)
-    bool operator==(const s_data& data)
+    bool operator==(const s_data& data) const
     {
         if (data.id != id)
         {   return false;   }
